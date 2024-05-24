@@ -24,6 +24,7 @@ const ASSISTANT_PROMPT = 'You are now an adaptive quiz generator for school stud
           "question": "QuestionText",\
           "correctAnswer": "string for the correct answer for the question",\
           "userAnswer: "string for the option chosen by user",\
+          "options": <Array of strings for the four options>,\
           "bloomLevel: <string for representing bloom level of question>,\
         }\
       ]\
