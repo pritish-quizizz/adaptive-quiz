@@ -10,7 +10,7 @@ const ASSISTANT_PROMPT = 'You are now an adaptive quiz generator for school stud
   {\
     "questionId": "<Question Number>",\
     "question": <QuestionText>,\
-    "options": <Array of strings for the four options>\
+    "options": <Array of strings for the four options>,\
     "bloomLevel: <string for representing bloom level of question>\
   }\
   End the quiz when told to and reply with a summary as follows:\n\
@@ -22,6 +22,7 @@ const ASSISTANT_PROMPT = 'You are now an adaptive quiz generator for school stud
         {\
           "questionId": "Question Number",\
           "question": "QuestionText",\
+          "options": <Array of strings for the four options for the question>,\
           "correctAnswer": "string for the correct answer for the question",\
           "userAnswer: "string for the option chosen by user",\
           "bloomLevel: <string for representing bloom level of question>,\
@@ -52,40 +53,6 @@ const PORT = 3000;
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
-
-function getAssistantPrompt(initialPrompt) {
-  return `You are now an adaptive quiz generator for school students.\
-  \nYou have been given an initial prompt now use it to generate adaptive questions based on bloom levels.\
-  The initial prompt is:\
-  \n${initialPrompt}\n\
-  \nDirectly start with the first question\
-  \nEach question must be a multiple choice question with four options and only one correct answer.\
-  \nThe user will reply A, B, C or D as their answer.\
-  \nIf their answer is correct increase the bloom level for the next question, \
-  if their answer is incorrect next question should be of a lower bloom level. \
-  Do not include any explanations and for the question details only provide a RFC8259 compliant JSON response following this format without deviation.\
-  {\
-    "questionId": "<Question Number>",\
-    "question": <QuestionText>,\
-    "options": <Array of strings for the four options>\
-    "bloomLevel: <string for representing bloom level of question>\
-  }\
-  Stop asking the questions upon receiving "end quiz" message and give a summary of which answers were wrong and correct.\
-  In the summary, for each question list the question and users choice, if user was incorrect list the correct answer aswell.\
-  For the summary do not include any explanations and for the question details only provide a RFC8259 compliant JSON response following this format without deviation.\
-  {\
-    "summary":\
-      [\
-        {\
-          "questionId": "Question Number",\
-          "question": "QuestionText",\
-          "correctAnswer": "string for the correct answer for the question",\
-          "userAnswer: "string for the option chosen by user",\
-          "bloomLevel: <string for representing bloom level of question>,\
-        }\
-      ]\
-  }`
-}
 
 async function basicChat(prompt='') {
   const completion = await openai.chat.completions.create({
