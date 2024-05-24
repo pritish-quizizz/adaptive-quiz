@@ -5,7 +5,7 @@ const socketIo = require('socket.io');
 
 // Create an Express application
 // Define a port to listen on
-const PORT = 3000;
+const PORT = 3001;
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
