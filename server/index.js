@@ -24,7 +24,6 @@ const ASSISTANT_PROMPT = 'You are now an adaptive quiz generator for school stud
           "question": "QuestionText",\
           "correctAnswer": "string for the correct answer for the question",\
           "userAnswer: "string for the option chosen by user",\
-          "options": <Array of strings for the four options>,\
           "bloomLevel: <string for representing bloom level of question>,\
         }\
       ]\
@@ -222,7 +221,7 @@ io.on('connection', (socket) => {
     // Start Quiz
     socket.on(SOCKET_EVENT.START, async (startData) => {
       console.log('initialising')
-      startNewThread();
+      await startNewThread();
       const initialPrompt = startData?.prompt || `The initial prompt is:\
       \ photosynthesis, the process by which green plants and certain other organisms transform light energy into chemical energy. During photosynthesis in green plants, light energy is captured and used to convert water, carbon dioxide, and minerals into oxygen and energy-rich organic compounds.\
       Stop asking the questions upon receiving "end quiz" message and give a summary of which answers were wrong and correct.\
