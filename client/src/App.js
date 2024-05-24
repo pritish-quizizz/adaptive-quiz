@@ -6,7 +6,7 @@ import './App.css';
 import Summary from './Summary';
 
 const socket = io('http://localhost:3001'); // Adjust the URL if your server runs on a different port or domain
-const MAX = 5;
+const MAX = 1;
 
 function App() {
   const [question, setQuestion] = useState('');
@@ -17,18 +17,22 @@ function App() {
   const [count, setCount] = useState(0);
   const [summary, setSummary] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [quest,setQues] = useState([]);
 
   useEffect(() => {
     socket.on('question', (ques) => {
+      console.log("ques",ques);
       const { question, options } = ques;
       setQuestion(question)
       setOptions(options);
-      setCount(count + 1);
+      setCount((count) => count + 1);
       setLoading(false);
+      setQues([...quest,ques])
     });
 
-    socket.on('summary', ({ summary }) => {
-      setSummary(summary);
+    socket.on('summary', (response ) => {
+      console.log("summ",response.summary);
+      setSummary(response.summary);
       setLoading(false);
     })
 
@@ -51,9 +55,11 @@ function App() {
   };
 
   const onNext = () => {
-    const event = count === MAX ? 'quizEnd' : 'question';
+    const event = count >= MAX ? 'quizEnd' : 'question';
+    console.log("count",count,event);
     socket.emit(event, { response: options[selected] });
     setLoading(true);
+    setSelected(-1);
   }
 
   if (loading) {
@@ -78,7 +84,7 @@ function App() {
               className='input'
             />
             <button className='button' onClick={generate}>Generate</button>
-          </> : summary.length ?
+          </> : !summary.length ?
             <div className='box'>
               <h1>{question}</h1>
               <ul>
@@ -94,7 +100,7 @@ function App() {
                 }
               </ul>
               <button className='button' style={{ width: '100%', marginTop: 40 }} onClick={onNext}>{count === MAX ? 'Submit' : 'Next'}</button>
-            </div> : <Summary summary={summary} />
+            </div> : <Summary summary={summary} ques={quest} />
         }
 
 
