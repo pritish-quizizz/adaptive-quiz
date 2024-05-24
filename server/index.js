@@ -32,7 +32,8 @@ const ASSISTANT_PROMPT = 'You are now an adaptive quiz generator for school stud
 const SOCKET_EVENT = {
   QUESTION: 'question',
   START: 'start',
-  QUIZ_END: 'quizEnd'
+  QUIZ_END: 'quizEnd',
+  SUMMARY: 'summary'
 }
 
 const express = require('express');
@@ -47,7 +48,7 @@ const openai = new openAI({apiKey: OPEN_API_KEY});
 
 // Create an Express application
 // Define a port to listen on
-const PORT = 3001;
+const PORT = 3000;
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
@@ -208,7 +209,6 @@ async function handleQuizEnd(previousResponse){
 io.on('connection', (socket) => {
     console.log('New client connected');
     socketConnection = socket
-    startNewThread();
     // createAssistant();
     // Send a message to the client
     socket.emit('message', 'Welcome to the Socket.IO server!');
@@ -221,6 +221,7 @@ io.on('connection', (socket) => {
     // Start Quiz
     socket.on(SOCKET_EVENT.START, async (startData) => {
       console.log('initialising')
+      startNewThread();
       const initialPrompt = startData?.prompt || `The initial prompt is:\
       \ photosynthesis, the process by which green plants and certain other organisms transform light energy into chemical energy. During photosynthesis in green plants, light energy is captured and used to convert water, carbon dioxide, and minerals into oxygen and energy-rich organic compounds.\
       Stop asking the questions upon receiving "end quiz" message and give a summary of which answers were wrong and correct.\
