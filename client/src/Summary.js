@@ -3,7 +3,8 @@ export default function Summary(props) {
     console.log("ques",ques);
     return (
         <div style={{display: 'flex',flexFlow: 'column'}}>
-            <h1 style={{textAlign: 'center',overflowY: 'scroll'}}>Summary of QUIZ</h1>
+            <h1 style={{textAlign: 'center',overflowY: 'scroll'}}>Summary of Adaptive Quiz</h1>
+            <h2 style={{textAlign: 'center',overflowY: 'scroll'}}>Final Bloom Level: {`${summary[summary.length - 1].bloomLevel}`}</h2>
             <div style={{height: 600,overflowY: 'scroll',border: '0.5px solid black',borderRadius: 10, marginBottom: 20}}>
             
             {

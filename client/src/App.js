@@ -70,7 +70,7 @@ function App() {
 
   if (loading) {
     return (
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', width: '100vw' }}> {count === MAX ? 'Generating Summary' : 'Loading!! Please Wait'} </div>
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', width: '100vw' }}> {count === MAX ? 'Generating Summary' : 'Generating Question'} </div>
     )
   }
 
@@ -102,13 +102,13 @@ function App() {
                       return (
                         <li onClick={() => setSelected(index)} style={{cursor: 'pointer'}}>
                           <input style={{ alignSelf: 'flex-start',cursor: 'pointer' }} type="radio" checked={index === selected} onClick={() => setSelected(index)} />
-                          <span>{option}</span>
+                          <span style={{ marginLeft: '4px' }}>{option}</span>
                         </li>
                       )
                     })
                   }
                 </ul>
-                <button className='button' style={{ marginTop: 40,alignSelf: 'flex-end' }} onClick={onNext}>{count === MAX ? 'Submit' : 'Next'}</button>
+                <button className='button' style={{ marginTop: 40,alignSelf: 'flex-start' }} onClick={onNext}>{count === MAX ? 'Submit' : 'Next'}</button>
               </div></div> : <Summary summary={summary} ques={quest} />
         }
 

@@ -63,9 +63,10 @@ body{
   background: #8854C0;
   color: #fff;
   border-radius: 4px;
-  padding: 8px;
+  padding: 8px 16px;
   cursor: pointer;
-  width: 200px;
+  min-width: 100px;
+  width: fit-content;
   font-weight: 700;
   font-size: 20px;
 }
@@ -101,5 +102,5 @@ ul {
   display: flex;
   align-items: center;
   flex-direction: column;
-  max-width: 80%;
+  max-width: 75vw;
 }
