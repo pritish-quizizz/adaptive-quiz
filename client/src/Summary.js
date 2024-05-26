@@ -24,7 +24,7 @@ export default function Summary(props) {
                             </ul>
                             <div style={{marginBottom: 10}}>{isCorrect ? 'Yay you got it right 🎉' : `Oops! The correct answer is ${correctAnswer}`}</div>
 
-                            <div><strong>Level:</strong> {bloomLevel}</div>
+                            <div><strong>BloomLevel:</strong> {bloomLevel}</div>
                         </div>
                     )
 

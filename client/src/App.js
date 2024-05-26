@@ -10,6 +10,7 @@ const MAX = 5;
 
 function App() {
   const [question, setQuestion] = useState('');
+  const [bloomLevel, setBloomLevel] = useState('');
   const [options, setOptions] = useState([]);
   const [isStarted, setIsStarted] = useState(false);
   const [selected, setSelected] = useState(-1);
@@ -22,8 +23,9 @@ function App() {
   useEffect(() => {
     socket.on('question', (ques) => {
       console.log("ques", ques);
-      const { question, options } = ques;
-      setQuestion(question)
+      const { question, options, bloomLevel } = ques;
+      setQuestion(question);
+      setBloomLevel(bloomLevel);
       setOptions(options);
       setCount((count) => count + 1);
       setLoading(false);
@@ -96,6 +98,7 @@ function App() {
             <div style={{display:'flex',justifyContent: 'center', alignItems: 'center'}}>
               <div className='box'>
                 <h1>{question}</h1>
+                <div><b>{`BloomLevel: ${bloomLevel}`}</b></div>
                 <ul>
                   {
                     options.map((option, index) => {
