@@ -1,15 +1,18 @@
 export default function Summary(props) {
     const { summary,ques } = props;
+    console.log("ques",ques);
     return (
-        <div>
-            <h1>Summary of QUIZ</h1>
+        <div style={{display: 'flex',flexFlow: 'column'}}>
+            <h1 style={{textAlign: 'center',overflowY: 'scroll'}}>Summary of QUIZ</h1>
+            <div style={{height: 600,overflowY: 'scroll',border: '0.5px solid black',borderRadius: 10, marginBottom: 20}}>
+            
             {
                 summary.map((s,index) => {
                     const { question, correctAnswer, userAnswer, bloomLevel, options } = s;
                     const isCorrect = correctAnswer === userAnswer;
                     return (
-                        <div>
-                            <h3>{question}</h3>
+                        <div style={{marginBottom: 4, padding: 10}}>
+                            <h3 style={{maxWidth: '60%'}}>Q{index+1}: {question}</h3>
                             <ul>
                                 {ques[index].options.map(option => {
                                     const optionToColor = option === userAnswer;
@@ -18,12 +21,17 @@ export default function Summary(props) {
                                     )
                                 })}
                             </ul>
-                            <div>{bloomLevel}</div>
+                            <div style={{marginBottom: 10}}>{isCorrect ? 'Yay you got it right 🎉' : `Oops! The correct answer is ${correctAnswer}`}</div>
+
+                            <div><strong>Level:</strong> {bloomLevel}</div>
                         </div>
                     )
 
                 })
             }
+            </div>
+
+            <button className="button" style={{alignSelf: 'flex-end'}} onClick={() => window.location.reload()}>Start a New Quiz?</button>
 
         </div>
     )

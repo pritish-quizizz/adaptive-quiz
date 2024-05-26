@@ -6,7 +6,7 @@ import './App.css';
 import Summary from './Summary';
 
 const socket = io('http://localhost:3001'); // Adjust the URL if your server runs on a different port or domain
-const MAX = 1;
+const MAX = 5;
 
 function App() {
   const [question, setQuestion] = useState('');
@@ -17,21 +17,21 @@ function App() {
   const [count, setCount] = useState(0);
   const [summary, setSummary] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [quest,setQues] = useState([]);
+  const [quest, setQues] = useState([]);
 
   useEffect(() => {
     socket.on('question', (ques) => {
-      console.log("ques",ques);
+      console.log("ques", ques);
       const { question, options } = ques;
       setQuestion(question)
       setOptions(options);
       setCount((count) => count + 1);
       setLoading(false);
-      setQues([...quest,ques])
+      setQues((q) => [...q, ques])
     });
 
-    socket.on('summary', (response ) => {
-      console.log("summ",response.summary);
+    socket.on('summary', (response) => {
+      console.log("summ", response.summary);
       setSummary(response.summary);
       setLoading(false);
     })
@@ -55,18 +55,26 @@ function App() {
   };
 
   const onNext = () => {
+    if(selected === -1){
+      alert("Please select an option before proceeding");
+      return;
+    }
     const event = count >= MAX ? 'quizEnd' : 'question';
-    console.log("count",count,event);
+    console.log("count", count, event);
     socket.emit(event, { response: options[selected] });
     setLoading(true);
     setSelected(-1);
   }
 
+  console.log("quesss", quest);
+
   if (loading) {
     return (
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', width: '100vw' }}>Loading..........</div>
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', width: '100vw' }}> {count === MAX ? 'Generating Summary' : 'Loading!! Please Wait'} </div>
     )
   }
+
+
 
   return (
     <div className="App">
@@ -85,22 +93,23 @@ function App() {
             />
             <button className='button' onClick={generate}>Generate</button>
           </> : !summary.length ?
-            <div className='box'>
-              <h1>{question}</h1>
-              <ul>
-                {
-                  options.map((option, index) => {
-                    return (
-                      <li>
-                        <input style={{ alignSelf: 'flex-start' }} type="radio" checked={index === selected} onClick={() => setSelected(index)} />
-                        <span>{option}</span>
-                      </li>
-                    )
-                  })
-                }
-              </ul>
-              <button className='button' style={{ width: '100%', marginTop: 40 }} onClick={onNext}>{count === MAX ? 'Submit' : 'Next'}</button>
-            </div> : <Summary summary={summary} ques={quest} />
+            <div style={{display:'flex',justifyContent: 'center', alignItems: 'center'}}>
+              <div className='box'>
+                <h1>{question}</h1>
+                <ul>
+                  {
+                    options.map((option, index) => {
+                      return (
+                        <li onClick={() => setSelected(index)} style={{cursor: 'pointer'}}>
+                          <input style={{ alignSelf: 'flex-start',cursor: 'pointer' }} type="radio" checked={index === selected} onClick={() => setSelected(index)} />
+                          <span>{option}</span>
+                        </li>
+                      )
+                    })
+                  }
+                </ul>
+                <button className='button' style={{ marginTop: 40,alignSelf: 'flex-end' }} onClick={onNext}>{count === MAX ? 'Submit' : 'Next'}</button>
+              </div></div> : <Summary summary={summary} ques={quest} />
         }
 
 
